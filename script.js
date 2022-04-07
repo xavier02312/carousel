@@ -14,10 +14,11 @@ const picture = document.querySelector(".slider img");
 //Compteur
 let counter = 0;
 
-//Ecouteur d'évènement sur la flèche
-const arrowRight = document.querySelector(".fleche-droite");
-arrowRight.addEventListener("click", () => {
+//déclaration du timer pour interval
+let timer;
 
+let autoSlide = () => {
+    //si le compteur est égal à l'index final du tableau, alors on le réinitialise à 0(on repart au début du tableau)
     if (counter === pictures.length - 1) {
         counter = 0;
     }
@@ -28,7 +29,13 @@ arrowRight.addEventListener("click", () => {
 
     //Modifie l'atribut "src" de l'image en sélectionnant l'élément suivant du tableau
     picture.src = `${path}${pictures[counter]}`;
-});
+}
+
+//Ecouteur d'évènement sur la flèche
+const arrowRight = document.querySelector(".fleche-droite");
+arrowRight.addEventListener("click", autoSlide);
+
+   
 
 const arrowLeft = document.querySelector(".fleche-gauche");
 arrowLeft.addEventListener("click", () => {
@@ -46,14 +53,28 @@ arrowLeft.addEventListener("click", () => {
     //Modifie l'attribut "src" de l'image en sélectionnant l'élément suivant du tableau
     picture.src = `${path}${pictures[counter]}`;
 });
+//Fonction pour arrêter le carousel
+const stopCarousel = () => {
+    //"Tue" le setInterval
+    clearInterval(timer);
+}
 
-//Défillement automatique
+//fonction permettant de démarer le carousel en automatique
+const startCarousel = () => {
 
- picture = document.querySelector(".slider img") = slide[counter];
+    //appelle la fonction "autoSlide" toute les 2 secondes
+    timer = setInterval(autoSlide, 2000);
+}
+startCarousel();
+//Quand le pointeur de la souris et sur le carousel , on stop le setInterval()
+picture.addEventListener("mouseover", stopCarousel);
+picture.addEventListener("mouseout", startCarousel);
 
-setInterval("ChangeSlide(1)", 5000);
+arrowRight.addEventListener("mouseover", stopCarousel);
+arrowRight.addEventListener("mouseout", startCarousel);
 
-
+arrowLeft.addEventListener("mouseover", stopCarousel);
+arrowLeft.addEventListener("mouseout", startCarousel);
 
 
 
